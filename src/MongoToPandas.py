@@ -5,8 +5,8 @@ import logging
 import yaml
 from pandas.io.json import json_normalize
 import datetime
-from schedule.MySql import MySql
-from schedule.MongoDb import MongoDb
+from db.MySql import MySql
+from db.MongoDb import MongoDb
 import time
 
 
