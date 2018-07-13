@@ -60,7 +60,7 @@ class MySql:
         except Exception as errormessage:
             logging.debug('Unable to get storeid and state mapping  %s', errormessage)
         else:
-            return self.storeid_stat_map
+            return self.storeid_state_map
 
     def get_uid_title_mapping(self, uid):
         self.get_position_title_mapping()

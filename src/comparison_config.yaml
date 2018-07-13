@@ -1,7 +1,5 @@
 static_info:
   week_days: 7
-#  time_zone_discrepancy: 4
-#  zone_with_4: 'America/Puerto_Rico'
 
 input_output_file:
   avafile: ava.csv

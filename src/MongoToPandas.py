@@ -5,9 +5,9 @@ import logging
 import yaml
 from pandas.io.json import json_normalize
 import datetime
+import time
 from db.MySql import MySql
 from db.MongoDb import MongoDb
-import time
 
 
 class MongoToPandas:
@@ -25,6 +25,7 @@ class MongoToPandas:
     def __init__(self):
         self.mongodb = MongoDb()
         self.mysql = MySql()
+        logging.debug('Loading mongodb data, this may take 1 minute.')
         raw_data = list(self.mongodb.mongodb_collection.find({}, projection=self.exclude_data))
         self.schedule_df = json_normalize(raw_data)
         logging.debug('Total columns is %s', self.schedule_df.shape[0])
@@ -93,7 +94,7 @@ class MongoToPandas:
 
     def add_title_state_weekday_column(self, dataframe):
         dataframe['position_title'] = dataframe['slot.owner.uid'].apply(lambda uid: self.get_title_info(uid))
-        dataframe['stat'] = dataframe['storeId'].apply(lambda storeid: self.mysql.get_storeid_state_mapping(storeid))
+        dataframe['state'] = dataframe['storeId'].apply(lambda storeid: self.mysql.get_storeid_state_mapping(storeid))
         return dataframe
 
 
@@ -105,7 +106,6 @@ def main():
     end_time = '2018-06-25'
     dataframe = mongotopandas.filter_storeid_and_time(start_time, end_time)
     dataframe2 = mongotopandas.add_title_state_weekday_column(dataframe)
-    print(dataframe2.loc[0:4, 'position_title'])
     print(dataframe2.head())
     end_time = time.time()
     time_span = end_time - begin_time
@@ -114,21 +114,6 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-# filter data based on storedId and time span
-
-# add week_day, position, stat column for further analyzing
-
-# verify the result
-#
-# print(schedule_df.loc[:, 'slot.date'])
-# print(schedule_df.loc[:, 'slot.from'])
-# print(schedule_df.loc[:, 'slot.to'])
-# print(schedule_df.loc[0])
-
-# print storeid
-# mysql = MySql()
 
 
 
