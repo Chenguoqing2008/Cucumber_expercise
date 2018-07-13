@@ -1,0 +1,54 @@
+static_info:
+  week_days: 7
+#  time_zone_discrepancy: 4
+#  zone_with_4: 'America/Puerto_Rico'
+
+input_output_file:
+  avafile: ava.csv
+  dayoff_file: dayoff.csv
+  comparison_output: ava_dayoff_with_mongodb_result.csv
+
+#mysql:
+#  ip: 23.99.89.14
+#  username: percolata_view
+#  password: percolata_view
+#  dbname: staffun_v2
+#  cannot_find_uid_tag: 999999999
+
+corporate:
+  id: 38
+
+mysql:
+  ip: 52.161.31.232
+  username: root
+  password: zip94303
+  dbname: staffum_v2
+
+store:
+  corporate_id: 38
+  cannot_find_internal_storeid_tag: 99999999
+
+#mongodb:
+#  ip: 172.19.0.6
+#  port: 27017
+#  username: staffum_user
+#  password: staffum#2017
+#  dbname: staffum
+#  collection: CalendarEvent
+
+mongodb:
+  ip: 52.161.31.232
+  port: 27017
+  username: staffum_user
+  password: staffum#2017
+  dbname: staffum
+  collection: CalendarEvent
+
+mail:
+  from: donotreply@percolata.com
+  to: jack.luh@percolata.com,aaron.arima@percolata.com,riche.zhang@baysensors.com,xiuchun.ou@percolata.com,xuemei.ding@percolata.com,robin.chen@percolata.com
+  bcc: None
+  port: 587
+  server: smtp.gmail.com
+  password: B1@ckh013NoLight
+  subject: Comparison result bewteen ava and dayoff csv data with mongodb
