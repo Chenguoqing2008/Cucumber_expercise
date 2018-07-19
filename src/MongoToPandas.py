@@ -95,6 +95,7 @@ class MongoToPandas:
     def add_title_state_weekday_column(self, dataframe):
         dataframe['position_title'] = dataframe['slot.owner.uid'].apply(lambda uid: self.get_title_info(uid))
         dataframe['state'] = dataframe['storeId'].apply(lambda storeid: self.mysql.get_storeid_state_mapping(storeid))
+        dataframe['weekday'] = dataframe['slot.date'].apply(lambda date: date.strftime("%a"))
         return dataframe
 
 

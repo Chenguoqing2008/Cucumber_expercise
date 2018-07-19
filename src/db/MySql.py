@@ -49,14 +49,14 @@ class MySql:
         else:
             return self.position_title_map
 
-    def generate_storeid_stat_map(self):
+    def generate_storeid_state_map(self):
         logging.debug('Start to query storeid and stat mapping of corporateId %s in mysql.', self.corporateid)
         try:
             mysql_query = 'select id, state from stfm_stores where corporate_id = (%s)'
             self.cursor.execute(mysql_query, self.corporateid)
             result = self.cursor.fetchall()
             self.storeid_state_map = {i[0]: i[1] for i in list(result)}
-            logging.debug("Store storeid and state mapping relation is: %s", self.storeid_stat_map)
+            logging.debug("Store storeid and state mapping relation is: %s", self.storeid_state_map)
         except Exception as errormessage:
             logging.debug('Unable to get storeid and state mapping  %s', errormessage)
         else:
@@ -77,7 +77,7 @@ class MySql:
             return self.position_title_map[position_id]
 
     def get_storeid_state_mapping(self, storeid):
-        self.generate_storeid_stat_map()
+        self.generate_storeid_state_map()
         logging.debug('Start to query state of storeid %s of corporateId %s in mysql.', storeid, self.corporateid)
         if storeid in self.storeid_state_map.keys():
             return self.storeid_state_map[storeid]
