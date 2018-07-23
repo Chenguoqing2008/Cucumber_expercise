@@ -2,8 +2,9 @@
 # _*_ coding:utf-8 _*_
 
 import pandas as pd
-import datetime
+import numpy
 import logging
+import datetime
 from db.MySql import MySql
 
 
@@ -12,6 +13,7 @@ class DataFrameFactory(MySql):
     logging.basicConfig(format=FORMAT, level=logging.DEBUG)
     dataframe = pd.DataFrame(columns=['dummy'])
     uid_position_cache = {}
+    pd.set_option('mode.chained_assignment', None)
 
     def __init__(self, dataframe):
         DataFrameFactory.dataframe = dataframe
@@ -19,19 +21,16 @@ class DataFrameFactory(MySql):
     @classmethod
     def dataframe_convert_datetime(cls):
         scheduler_dataframe = cls.dataframe
-        scheduler_dataframe.loc[:, 'slot.from'] = scheduler_dataframe.astype(datetime)
-        # scheduler_dataframe.loc[:, 'slot.from'] = pd.to_datetime(scheduler_dataframe.loc[:, 'slot.from'])
-        # scheduler_dataframe.loc[:, 'slot.to'] = pd.to_datetime(scheduler_dataframe.loc[:, 'slot.to'])
-        # scheduler_dataframe.loc[:, 'slot.date'] = pd.to_datetime(scheduler_dataframe.loc[:, 'slot.date'])
-        # logging.debug('Convert slot.from, slot.to, slot.date to datetime type .')
-        # scheduler_dataframe.loc[:, 'slot.date'] = scheduler_dataframe.loc[:, 'slot.date']\
-        #     .apply(lambda x: datetime.datetime.date(x))
-        scheduler_dataframe.loc[:, 'slot.from'] = scheduler_dataframe.loc[:, 'slot.from']\
+        scheduler_dataframe['slot.from'] = pd.to_datetime(scheduler_dataframe['slot.from'])
+        scheduler_dataframe['slot.to'] = pd.to_datetime(scheduler_dataframe['slot.to'])
+        scheduler_dataframe['slot.date'] = pd.to_datetime(scheduler_dataframe['slot.date'])
+        logging.debug('Convert slot.from, slot.to, slot.date to datetime type .')
+        scheduler_dataframe.loc[:, 'slot.date'] = scheduler_dataframe.loc[:, 'slot.date']\
+            .apply(lambda x: datetime.datetime.date(x))
+        scheduler_dataframe['slot.from'] = scheduler_dataframe['slot.from']\
             .apply(lambda x: datetime.datetime.time(x))
-        #  scheduler_dataframe.loc[:, 'slot.from'] = scheduler_dataframe.loc[:, 'slot.from']\
-        #     .apply(lambda x: datetime.datetime.time(x))
-        # scheduler_dataframe.loc[:, 'slot.to'] = scheduler_dataframe.loc[:, 'slot.to']\
-        #     .apply(lambda x: datetime.datetime.time(x))
+        scheduler_dataframe.loc[:, 'slot.to'] = scheduler_dataframe.loc[:, 'slot.to']\
+            .apply(lambda x: datetime.datetime.time(x))
         return cls(scheduler_dataframe)
 
     # @classmethod
@@ -43,7 +42,9 @@ class DataFrameFactory(MySql):
     @classmethod
     def filter_storeid(cls, storeid_list):
         dataframe_filter_storeid = cls.dataframe[cls.dataframe['storeId'].isin(storeid_list)]
-        # logging.debug('Filter storeId is done, valid storeId is', cls.dataframe['storeId'])
+        filter_storeid_series = dataframe_filter_storeid[['storeId']]
+        unique_storeid_list = numpy.unique(numpy.array(filter_storeid_series)[:, 0])
+        logging.debug('Filter storeId is done, valid storeId is %s', unique_storeid_list)
         return cls(dataframe_filter_storeid)
 
     @classmethod
