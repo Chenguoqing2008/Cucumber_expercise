@@ -20,7 +20,7 @@ class MySql:
     storeid_state_map = {}
 
     def __init__(self):
-
+        logging.debug('Begin to connect mysql.')
         mysql_db = pymysql.connect(*self.mysql_connection)
         self.cursor = mysql_db.cursor()
         logging.debug('Connecting mysql successfully.')

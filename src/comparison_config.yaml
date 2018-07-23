@@ -13,19 +13,6 @@ input_output_file:
 #  dbname: staffun_v2
 #  cannot_find_uid_tag: 999999999
 
-corporate:
-  id: 38
-
-mysql:
-  ip: 52.161.31.232
-  username: root
-  password: zip94303
-  dbname: staffum_v2
-
-store:
-  corporate_id: 38
-  cannot_find_internal_storeid_tag: 99999999
-
 #mongodb:
 #  ip: 172.19.0.6
 #  port: 27017
@@ -34,6 +21,12 @@ store:
 #  dbname: staffum
 #  collection: CalendarEvent
 
+mysql:
+  ip: 52.161.31.232
+  username: root
+  password: zip94303
+  dbname: staffum_v2
+
 mongodb:
   ip: 52.161.31.232
   port: 27017
@@ -41,6 +34,13 @@ mongodb:
   password: staffum#2017
   dbname: staffum
   collection: CalendarEvent
+
+store:
+  corporate_id: 38
+  cannot_find_internal_storeid_tag: 99999999
+
+corporate:
+  id: 38
 
 mail:
   from: donotreply@percolata.com

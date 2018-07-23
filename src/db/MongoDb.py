@@ -4,7 +4,6 @@ import logging
 
 import yaml
 from pymongo import MongoClient
-import datetime
 
 
 class MongoDb:
@@ -41,4 +40,5 @@ class MongoDb:
                     cache_record = []
             if cache_record:
                 data_list = data_list + cache_record
+                cache_record = []
         return data_list
