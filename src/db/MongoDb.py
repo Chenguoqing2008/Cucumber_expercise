@@ -1,8 +1,10 @@
 #! /usr/bin/python3
 # _*_ coding:utf-8 _*_
 import logging
+
 import yaml
 from pymongo import MongoClient
+import datetime
 
 
 class MongoDb:
@@ -27,3 +29,16 @@ class MongoDb:
         self.mongodb_collection = self.mongodb.get_collection(self.mongo_collection)
         logging.debug('Connecting mongodb successfully.')
 
+    def get_time_span_data(self, date_str_list, chunk_size):
+        data_list = []
+        cache_record = []
+        for date in date_str_list:
+            cursor = self.mongodb_collection.find({'slot.owner.from': {'$regex': date}})
+            for i, record in enumerate(cursor):
+                cache_record.append(record)
+                if i % chunk_size == chunk_size - 1:
+                    data_list = data_list + cache_record
+                    cache_record = []
+            if cache_record:
+                data_list = data_list + cache_record
+        return data_list
