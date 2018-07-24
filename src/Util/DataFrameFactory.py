@@ -8,12 +8,13 @@ import datetime
 from db.MySql import MySql
 
 
-class DataFrameFactory(MySql):
+class DataFrameFactory():
     FORMAT = "%(asctime)-8s %(message)s"
     logging.basicConfig(format=FORMAT, level=logging.DEBUG)
     dataframe = pd.DataFrame(columns=['dummy'])
     uid_position_cache = {}
     pd.set_option('mode.chained_assignment', None)
+    mysql = MySql()
 
     def __init__(self, dataframe):
         DataFrameFactory.dataframe = dataframe
@@ -33,12 +34,6 @@ class DataFrameFactory(MySql):
             .apply(lambda x: datetime.datetime.time(x))
         return cls(scheduler_dataframe)
 
-    # @classmethod
-    # def filter_storeid(cls, storeid_list):
-    #     dataframe_filter_storeid = cls.dataframe[cls.dataframe['storeId'].isin(storeid_list)]
-    #     # logging.debug('Filter storeId is done, valid storeId is', cls.dataframe['storeId'])
-    #     return cls(dataframe_filter_storeid)
-
     @classmethod
     def filter_storeid(cls, storeid_list):
         dataframe_filter_storeid = cls.dataframe[cls.dataframe['storeId'].isin(storeid_list)]
@@ -53,7 +48,7 @@ class DataFrameFactory(MySql):
         dataframe_columns['position_title'] = dataframe_columns['slot.owner.uid']\
             .apply(lambda uid: cls.get_title_info(uid))
         dataframe_columns['state'] = dataframe_columns['storeId']\
-            .apply(lambda storeid: super().get_storeid_state_mapping(storeid))
+            .apply(lambda storeid: cls.mysql.get_storeid_state_mapping(storeid))
         dataframe_columns['weekday'] = dataframe_columns['slot.date']\
             .apply(lambda date: date.strftime("%a"))
         return cls(dataframe_columns)
@@ -64,6 +59,6 @@ class DataFrameFactory(MySql):
         if uid in uid_list:
             return cls.uid_position_cache[uid]
         else:
-            title = super().get_uid_title_mapping(uid)
+            title = cls.mysql.get_uid_title_mapping(uid)
             cls.uid_position_cache[uid] = title
             return title

@@ -48,14 +48,20 @@ def main():
     mysql = MySql()
     mongotopandas = MongoToPandas(mongodb, mysql)
 
+    begin_time2 = time.time()
     start_time = '2018-07-10'
     end_time = '2018-07-10'
     rawdata_list = mongotopandas.generate_dataframe_rawdata(start_time, end_time)
     dataframe_base = mongotopandas.get_base_dataframe(rawdata_list)
     print(dataframe_base.head())
+    end_time2 = time.time()
+    load_time = end_time2 - begin_time2
+    logging.debug('Loading pandas spend time %s', load_time)
     dataframe_factory = DataFrameFactory(dataframe_base)
     dataframe1 = dataframe_factory.filter_storeid(mongotopandas.storeid_list)\
-                                  .dataframe_convert_datetime()
+                                  .dataframe_convert_datetime()\
+                                  .add_title_state_weekday_column()
+
     # dataframe2 = mongotopandas.add_title_state_weekday_column(dataframe)
     print(dataframe1.dataframe.head())
     end_time = time.time()
