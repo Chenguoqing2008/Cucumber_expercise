@@ -3,6 +3,7 @@
 import logging
 import yaml
 import pymysql
+import pandas as pd
 
 
 class MySql:
@@ -21,8 +22,8 @@ class MySql:
 
     def __init__(self):
         logging.debug('Begin to connect mysql.')
-        mysql_db = pymysql.connect(*self.mysql_connection)
-        self.cursor = mysql_db.cursor()
+        self.mysql_db = pymysql.connect(*self.mysql_connection)
+        self.cursor = self.mysql_db.cursor()
         logging.debug('Connecting mysql successfully.')
 
     def get_storeid(self):
@@ -36,52 +37,22 @@ class MySql:
         else:
             return [i[0] for i in list(result)]
 
-    def get_position_title_mapping(self):
-        # logging.debug('Start to query position and title mapping of corporateId %s in mysql.', self.corporateid)
-        try:
-            mysql_query = 'select id, title from stfm_positions where corporate_id = (%s)'
-            self.cursor.execute(mysql_query, self.corporateid)
-            result = self.cursor.fetchall()
-            self.position_title_map = {i[0]: str(i[1]).upper() for i in list(result)}
-            # logging.debug("Store position and title mapping relation is: %s", self.position_title_map)
-        except Exception as errormessage:
-            logging.debug('Unable to get position title mapping  %s', errormessage)
-        else:
-            return self.position_title_map
-
     def generate_storeid_state_map(self):
-        # logging.debug('Start to query storeid and stat mapping of corporateId %s in mysql.', self.corporateid)
-        try:
-            mysql_query = 'select id, state from stfm_stores where corporate_id = (%s)'
-            self.cursor.execute(mysql_query, self.corporateid)
-            result = self.cursor.fetchall()
-            self.storeid_state_map = {i[0]: i[1] for i in list(result)}
-            # logging.debug("Store storeid and state mapping relation is: %s", self.storeid_state_map)
-        except Exception as errormessage:
-            logging.debug('Unable to get storeid and state mapping  %s', errormessage)
-        else:
-            return self.storeid_state_map
+        mysql_query = "select id, state from stfm_stores " \
+                      "where corporate_id = {corporate_id}".format(corporate_id=self.corporate_id)
+        id_state_dataframe = pd.read_sql_query(mysql_query, self.mysql_db)
+        id_state_dict = dict(zip(id_state_dataframe['id'], id_state_dataframe['state']))
+        return id_state_dict
 
-    def get_uid_title_mapping(self, uid):
-        self.get_position_title_mapping()
-        try:
-            mysql_query = 'select position_id from stfm_staffing_roster where corporate_id = (%s) and uid = (%s)'
-            args = (self.corporateid, uid)
-            self.cursor.execute(mysql_query, args)
-            result = self.cursor.fetchone()
-            position_id = result[0]
-        except Exception as errormessage:
-            logging.debug('Unable to get uid title mapping  %s', errormessage)
-        else:
-            # logging.debug('position_id is %s and title is %s', result[0], self.position_title_map[position_id])
-            return self.position_title_map[position_id]
+    def generate_uid_title_map(self, uid_list):
+        uid_list_str = '(' + ','.join(uid_list) + ')'
+        mysql_query = """select a.uid, b.title from stfm_staffing_roster a, stfm_positions b where a.corporate_id = b.corporate_id
+                         and a.corporate_id = {corporate_id} and a.position_id = b.id
+                         and a.uid in {uid_str}""".format(corporate_id=self.corporate_id, uid_str=uid_list_str)
+        uid_list_dataframe = pd.read_sql_query(mysql_query, self.mysql_db)
+        uid_list_dict = dict(zip(uid_list_dataframe['uid'], uid_list_dataframe['title']))
+        return uid_list_dict
 
-    def get_storeid_state_mapping(self, storeid):
-        self.generate_storeid_state_map()
-        logging.debug('Start to query state of storeid %s of corporateId %s in mysql.', storeid, self.corporateid)
-        if storeid in self.storeid_state_map.keys():
-            return self.storeid_state_map[storeid]
-        else:
-            return None
+
 
 

@@ -8,7 +8,7 @@ import datetime
 from db.MySql import MySql
 
 
-class DataFrameFactory():
+class DataFrameFactory:
     FORMAT = "%(asctime)-8s %(message)s"
     logging.basicConfig(format=FORMAT, level=logging.DEBUG)
     dataframe = pd.DataFrame(columns=['dummy'])
@@ -43,22 +43,27 @@ class DataFrameFactory():
         return cls(dataframe_filter_storeid)
 
     @classmethod
-    def add_title_state_weekday_column(cls):
-        dataframe_columns = cls.dataframe
-        dataframe_columns['position_title'] = dataframe_columns['slot.owner.uid']\
-            .apply(lambda uid: cls.get_title_info(uid))
-        dataframe_columns['state'] = dataframe_columns['storeId']\
-            .apply(lambda storeid: cls.mysql.get_storeid_state_mapping(storeid))
-        dataframe_columns['weekday'] = dataframe_columns['slot.date']\
-            .apply(lambda date: date.strftime("%a"))
-        return cls(dataframe_columns)
+    def add_state_column(cls):
+        dataframe_state = cls.dataframe
+        storeid_state_map = cls.mysql.generate_storeid_state_map()
+        dataframe_state['state'] = dataframe_state['storeId'] \
+            .apply(lambda storeId: storeid_state_map.get(storeId))
+        return cls(dataframe_state)
 
     @classmethod
-    def get_title_info(cls, uid):
-        uid_list = cls.uid_position_cache.keys()
-        if uid in uid_list:
-            return cls.uid_position_cache[uid]
-        else:
-            title = cls.mysql.get_uid_title_mapping(uid)
-            cls.uid_position_cache[uid] = title
-            return title
+    def add_title_column(cls):
+        dataframe_title = cls.dataframe
+        uid_list = dataframe_title['slot.owner.uid'].unique()
+        unique_uid = [str(_) for _ in uid_list]
+        uid_title_map = cls.mysql.generate_uid_title_map(unique_uid)
+        dataframe_title['position_title'] = dataframe_title['slot.owner.uid'] \
+            .apply(lambda uid: uid_title_map.get(uid))
+        return cls(dataframe_title)
+
+    @classmethod
+    def add_weekday_column(cls):
+        dataframe_weekday = cls.dataframe
+        dataframe_weekday['weekday'] = dataframe_weekday['slot.date'] \
+            .apply(lambda date: date.strftime("%a"))
+        return cls(dataframe_weekday)
+
