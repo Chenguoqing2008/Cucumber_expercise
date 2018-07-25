@@ -12,6 +12,7 @@ class DataFrameFactory:
     FORMAT = "%(asctime)-8s %(message)s"
     logging.basicConfig(format=FORMAT, level=logging.DEBUG)
     dataframe = pd.DataFrame(columns=['dummy'])
+    uid_position_cache = {}
     pd.set_option('mode.chained_assignment', None)
     mysql = MySql()
 
