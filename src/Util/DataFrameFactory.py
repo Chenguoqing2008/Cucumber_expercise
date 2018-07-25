@@ -12,7 +12,6 @@ class DataFrameFactory:
     FORMAT = "%(asctime)-8s %(message)s"
     logging.basicConfig(format=FORMAT, level=logging.DEBUG)
     dataframe = pd.DataFrame(columns=['dummy'])
-    uid_position_cache = {}
     pd.set_option('mode.chained_assignment', None)
     mysql = MySql()
 
@@ -35,7 +34,9 @@ class DataFrameFactory:
         return cls(scheduler_dataframe)
 
     @classmethod
-    def filter_storeid(cls, storeid_list):
+    def filter_storeid(cls):
+        storeid_list = cls.mysql.get_storeid()
+        logging.debug("Storeid list is %s", storeid_list)
         dataframe_filter_storeid = cls.dataframe[cls.dataframe['storeId'].isin(storeid_list)]
         filter_storeid_series = dataframe_filter_storeid[['storeId']]
         unique_storeid_list = numpy.unique(numpy.array(filter_storeid_series)[:, 0])

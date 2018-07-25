@@ -22,7 +22,8 @@ class MongoDb:
 
     def __init__(self):
         logging.debug('Begin to connect mongodb.')
-        self.uri = 'mongodb://' + self.mongodb_user + ':' + self.mongodb_password + '@' + self.mongodb_address + '/'+ self.mongodb_dbname
+        self.uri = 'mongodb://' + self.mongodb_user + ':' + self.mongodb_password + '@' + \
+                   self.mongodb_address + '/' + self.mongodb_dbname
         self.client = MongoClient(self.uri)
         self.mongodb = self.client[self.mongodb_dbname]
         self.mongodb_collection = self.mongodb.get_collection(self.mongo_collection)
