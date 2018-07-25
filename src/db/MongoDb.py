@@ -1,7 +1,6 @@
 #! /usr/bin/python3
 # _*_ coding:utf-8 _*_
 import logging
-
 import yaml
 from pymongo import MongoClient
 
