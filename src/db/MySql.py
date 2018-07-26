@@ -7,7 +7,6 @@ import pandas as pd
 
 
 class MySql:
-
     FORMAT = "%(asctime)-8s %(message)s"
     logging.basicConfig(format=FORMAT, level=logging.DEBUG)
 
@@ -17,8 +16,6 @@ class MySql:
     mysql_connection = (config['mysql']['ip'], config['mysql']['username'], config['mysql']['password'],
                         config['mysql']['dbname'])
     corporateid = config['corporate']['id']
-    position_title_map = {}
-    storeid_state_map = {}
 
     def __init__(self):
         logging.debug('Begin to connect mysql.')
