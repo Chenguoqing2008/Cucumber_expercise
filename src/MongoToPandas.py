@@ -5,8 +5,8 @@ import logging
 import yaml
 from pandas.io.json import json_normalize
 import time
-from Util.DateInfo import DateInfo
-from Util.DataFrameFactory import DataFrameFactory
+from util.DateInfo import DateInfo
+from util.DataFrameFactory import DataFrameFactory
 from db.MongoDb import run_mongo_converter
 
 
