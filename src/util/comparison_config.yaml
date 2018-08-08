@@ -1,11 +1,3 @@
-static_info:
-  week_days: 7
-
-input_output_file:
-  avafile: ava.csv
-  dayoff_file: dayoff.csv
-  comparison_output: ava_dayoff_with_mongodb_result.csv
-
 #mysql:
 #  ip: 23.99.89.14
 #  username: percolata_view
@@ -34,10 +26,6 @@ mongodb:
   password: staffum#2017
   dbname: staffum
   collection: CalendarEvent
-
-store:
-  corporate_id: 38
-  cannot_find_internal_storeid_tag: 99999999
 
 corporate:
   id: 38
