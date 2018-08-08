@@ -12,7 +12,6 @@ class MySql:
 
     config = yaml.load(open("comparison_config.yaml"))
     corporate_id = config['store']['corporate_id']
-    cannot_find_internal_storeid_tag = config['store']['cannot_find_internal_storeid_tag']
     mysql_connection = (config['mysql']['ip'], config['mysql']['username'], config['mysql']['password'],
                         config['mysql']['dbname'])
     corporateid = config['corporate']['id']

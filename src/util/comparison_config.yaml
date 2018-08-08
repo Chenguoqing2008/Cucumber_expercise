@@ -30,6 +30,9 @@ mongodb:
 corporate:
   id: 38
 
+store:
+  corporate_id: 38
+
 mail:
   from: donotreply@percolata.com
   to: jack.luh@percolata.com,aaron.arima@percolata.com,riche.zhang@baysensors.com,xiuchun.ou@percolata.com,xuemei.ding@percolata.com,robin.chen@percolata.com
