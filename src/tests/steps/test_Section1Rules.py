@@ -3,6 +3,7 @@
 import pytest
 import os
 from pathlib import Path
+# from util.ScheduleObject import ScheduleObject
 
 from pytest_bdd import (
     given,
@@ -31,3 +32,9 @@ def injecting_given():
 @then('foo should be "injected foo"')
 def foo_is_foo(foo):
     assert foo == 'injected foo'
+
+
+@then("fixture test should win")
+def step_impl(schedule_object):
+    assert schedule_object == 'hello'
+

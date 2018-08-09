@@ -9,3 +9,4 @@ Feature: schedule start and end date validation
   Scenario: Test given fixture injection
     Given I have injecting given
     Then foo should be "injected foo"
+    Then fixture test should win

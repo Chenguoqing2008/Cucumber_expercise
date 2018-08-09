@@ -29,7 +29,7 @@ class MongoToPandas:
         return date_str_list
 
     def get_base_dataframe(self, queue_data):
-        dataframe_list = [queue_data.get() for i in range(queue_data.qsize())]
+        dataframe_list = [queue_data.get() for _ in range(queue_data.qsize())]
         schedule_df = json_normalize(dataframe_list)
         logging.debug('Total columns is %s', schedule_df.shape[0])
         schedule_df = schedule_df.drop(columns=self.unused_columns)
