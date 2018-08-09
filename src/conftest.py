@@ -3,7 +3,6 @@
 
 import pytest
 from util.ScheduleObject import ScheduleObject
-import os
 
 
 def pytest_addoption(parser):
@@ -24,5 +23,5 @@ def schedule_object(request):
     start_date = request.config.getoption('start')[0]
     end_date = request.config.getoption('end')[0]
     scheduleobject = ScheduleObject(start_date, end_date)
-    return scheduleobject.dataframe_base.shape
+    return scheduleobject.dataframe_base
 

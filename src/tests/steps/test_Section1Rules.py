@@ -4,6 +4,7 @@
 from pathlib import Path
 import os
 import pytest
+import pandas as pd
 
 from pytest_bdd import (
     given,
@@ -12,7 +13,13 @@ from pytest_bdd import (
     when,
 )
 
-schedule_object = None
+
+class ScheduleData:
+    dataframe = pd.DataFrame(columns=['dummy'])
+
+    @classmethod
+    def set_dataframe(cls, dataframe):
+        cls.dataframe = dataframe
 
 
 @pytest.fixture
@@ -21,36 +28,26 @@ def pytestbdd_feature_base_dir():
     return os.path.join(os.path.abspath(parent_path.parent), 'features')
 
 
-@given("I have injecting given", target_fixture="foo")
-def injecting_given():
-    return "injected foo"
-
-
-@then('foo should be "injected foo"')
-def foo_is_foo(foo):
-    assert foo == 'injected foo'
-
-
-@scenario("Section1Rules.feature", 'Test given fixture injection')
-def test_test_given_fixture_injection():
+@scenario('Section1Rules.feature', 'schedule start and end date should match questionnaire')
+def test_schedule_date():
     pass
 
 
-# @given("Schedule is generated and schedule data is trans-formatted to pandas")
-# def step_impl(schedule_object):
-#     schedule_object = schedule_object
-#
+@given("Schedule is generated and schedule data is trans-formatted to pandas")
+def generate_schedule_data(schedule_object):
+    ScheduleData.set_dataframe(schedule_object)
 
-# @given("I am a store manager and i check the schedule")
-# def step_impl():
-#     pass
-#
-#
-# @when("The schedule is generated")
-# def step_impl():
-#     pass
-#
-#
-# @then("All the store schedule begin and end date shall be 'Sun' and 'Sat'")
-# def step_impl():
-#     pass
+
+@given("I am a store manager and i check the schedule")
+def step_imp2():
+    pass
+
+
+@when("The schedule is generated")
+def step_imp_tekd():
+    pass
+
+
+@then("All the store schedule begin and end date shall be 'Sun' and 'Sat'")
+def step_imp3():
+    assert ScheduleData.dataframe == 'hello'
