@@ -23,5 +23,5 @@ def schedule_object(request):
     start_date = request.config.getoption('start')[0]
     end_date = request.config.getoption('end')[0]
     scheduleobject = ScheduleObject(start_date, end_date)
-    return scheduleobject.dataframe_base
+    return scheduleobject.shedule_dataframe
 

@@ -10,7 +10,7 @@ Feature: schedule start and end date validation
 #    Then foo should be "injected foo"
 
   Scenario: schedule start and end date should match questionnaire
-    Given All the
+    Given I am a store manager and i check the schedule
     When The schedule is generated
     Then All the store schedule begin and end date shall be 'Sun' and 'Sat'
 

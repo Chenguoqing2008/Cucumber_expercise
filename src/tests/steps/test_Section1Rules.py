@@ -17,9 +17,8 @@ from pytest_bdd import (
 class ScheduleData:
     dataframe = pd.DataFrame(columns=['dummy'])
 
-    @classmethod
-    def set_dataframe(cls, dataframe):
-        cls.dataframe = dataframe
+    def __init__(self, dataframe):
+        self.__class__.dataframe = dataframe
 
 
 @pytest.fixture
@@ -35,7 +34,7 @@ def test_schedule_date():
 
 @given("Schedule is generated and schedule data is trans-formatted to pandas")
 def generate_schedule_data(schedule_object):
-    ScheduleData.set_dataframe(schedule_object)
+    ScheduleData(schedule_object)
 
 
 @given("I am a store manager and i check the schedule")
@@ -50,4 +49,4 @@ def step_imp_tekd():
 
 @then("All the store schedule begin and end date shall be 'Sun' and 'Sat'")
 def step_imp3():
-    assert ScheduleData.dataframe == 'hello'
+    assert ScheduleData.dataframe.head(0) == 'hello'
