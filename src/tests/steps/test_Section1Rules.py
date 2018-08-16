@@ -15,10 +15,11 @@ from pytest_bdd import (
 
 
 class ScheduleData:
-    dataframe = pd.DataFrame(columns=['dummy'])
-
-    def __init__(self, dataframe):
-        self.__class__.dataframe = dataframe
+    # dataframe = pd.DataFrame(columns=['dummy'])
+    #
+    # def __init__(self, dataframe):
+    #     self.__class__.dataframe = dataframe
+    pass
 
 
 @pytest.fixture
@@ -34,19 +35,24 @@ def test_schedule_date():
 
 @given("Schedule is generated and schedule data is trans-formatted to pandas")
 def generate_schedule_data(schedule_object):
-    ScheduleData(schedule_object)
+    ScheduleData.data = schedule_object
 
 
-@given("I am a store manager and i check the schedule")
-def step_imp2():
+@given("I am a store manager and i want to check the schedule")
+def store_manager_walkin():
     pass
 
 
-@when("The schedule is generated")
-def step_imp_tekd():
-    pass
+@then("The store schedule date shall begin at <begin_weekday> and end at <end_weekday>")
+def check_store_schedule_begin_end_weekdat(begin_weekday, end_weekday):
+    storeid = ScheduleData.storelist[0]
+    assert storeid == '862'
+    # begin_date = ScheduleData.data.loc['storeid' == storeid]
+    assert ScheduleData.data.head(0) == 'hello'
 
 
-@then("All the store schedule begin and end date shall be 'Sun' and 'Sat'")
-def step_imp3():
-    assert ScheduleData.dataframe.head(0) == 'hello'
+@when("I select the store id <storeid>")
+def select_storeid(storeid):
+    ScheduleData.storelist = []
+    ScheduleData.storelist.append(storeid)
+

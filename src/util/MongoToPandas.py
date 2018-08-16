@@ -53,7 +53,7 @@ def main():
         .add_weekday_column().dataframe
     print(shedule_dataframe.shape)
     # print(shedule_dataframe.loc[:, 'slot.from'])
-    print(shedule_dataframe.head(0))
+    print(shedule_dataframe.head(3))
     end_time = time.time()
     time_span = end_time - begin_time
     logging.debug('Convert mongodb to pandas time taken %s', time_span)
