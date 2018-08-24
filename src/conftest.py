@@ -1,5 +1,3 @@
-#! /usr/bin/python3
-# _*_ coding:utf-8 _*_
 
 import pytest
 from util.ScheduleObject import ScheduleObject
@@ -21,7 +19,12 @@ def pytest_generate_tests(metafunc):
 @pytest.fixture
 def schedule_object(request):
     start_date = request.config.getoption('start')[0]
+    print("##########start_date##################" + start_date)
     end_date = request.config.getoption('end')[0]
+    print("##########end_date##################" + end_date)
     scheduleobject = ScheduleObject(start_date, end_date)
-    return scheduleobject.shedule_dataframe
+    # test_data = scheduleobject.schedule_dataframe.shape(1)
+    print(type(scheduleobject))
+    # print(scheduleobject.schedule_dataframe.head(2))
+    return scheduleobject.schedule_dataframe
 

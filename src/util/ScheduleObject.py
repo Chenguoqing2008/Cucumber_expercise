@@ -15,7 +15,7 @@ class ScheduleObject:
         date_str_list = self.mongotopandas.generate_date_list(self.start_date, self.end_date)
         output_queue = run_mongo_converter(date_str_list)
         self.dataframe_base = self.mongotopandas.get_base_dataframe(output_queue)
-        self.shedule_dataframe = DataFrameFactory(self.dataframe_base) \
+        self.schedule_dataframe = DataFrameFactory(self.dataframe_base) \
             .filter_storeid() \
             .dataframe_convert_datetime() \
             .add_title_column() \
