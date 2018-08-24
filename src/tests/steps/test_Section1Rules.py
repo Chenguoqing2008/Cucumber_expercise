@@ -36,6 +36,7 @@ def test_schedule_date():
 @given("Schedule is generated and schedule data is trans-formatted to pandas")
 def generate_schedule_data(schedule_object):
     ScheduleData.data = schedule_object
+    # print(ScheduleData.data.head(3))
 
 
 @given("I am a store manager and i want to check the schedule")
@@ -46,9 +47,13 @@ def store_manager_walkin():
 @then("The store schedule date shall begin at <begin_weekday> and end at <end_weekday>")
 def check_store_schedule_begin_end_weekdat(begin_weekday, end_weekday):
     storeid = ScheduleData.storelist[0]
-    assert storeid == '862'
+    print(storeid)
+    # print(ScheduleData.data.loc[0:1, 'weekday'])
+    print(ScheduleData.data.head(2))
+    assert ScheduleData.data.loc[0:1, 'weekday'][0] == 'hello'
+    # assert storeid == '861'
     # begin_date = ScheduleData.data.loc['storeid' == storeid]
-    assert ScheduleData.data.head(0) == 'hello'
+    # print(type(ScheduleData.data))
 
 
 @when("I select the store id <storeid>")

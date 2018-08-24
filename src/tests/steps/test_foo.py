@@ -12,6 +12,11 @@ from pytest_bdd import (
 )
 
 
+@scenario('Section1Rules.feature', 'Test given fixture injection')
+def test_given_fixture_injection():
+    pass
+
+
 @pytest.fixture
 def pytestbdd_feature_base_dir():
     parent_path = Path(os.path.abspath(os.path.pardir))
@@ -28,7 +33,4 @@ def foo_is_foo(foo):
     assert foo == 'injected foo'
 
 
-@scenario('Section1Rules.feature', 'Test given fixture injection')
-def test_given_fixture_injection():
-    pass
 
