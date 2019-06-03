@@ -48,12 +48,8 @@ def store_manager_walkin():
 def check_store_schedule_begin_end_weekdat(begin_weekday, end_weekday):
     storeid = ScheduleData.storelist[0]
     print(storeid)
-    # print(ScheduleData.data.loc[0:1, 'weekday'])
     print(ScheduleData.data.head(2))
     assert ScheduleData.data.loc[0:1, 'weekday'][0] == 'hello'
-    # assert storeid == '861'
-    # begin_date = ScheduleData.data.loc['storeid' == storeid]
-    # print(type(ScheduleData.data))
 
 
 @when("I select the store id <storeid>")
