@@ -13,16 +13,16 @@ mongodb:
   collection: *
 
 corporate:
-  id: 38
+  id: *
 
 store:
-  corporate_id: 38
+  corporate_id: *
 
 mail:
   from: *
   to: *
   bcc: None
-  port: 587
-  server: smtp.gmail.com
+  port: *
+  server: *
   password: *
-  subject: Comparison result bewteen ava and dayoff csv data with mongodb
+  subject: *
